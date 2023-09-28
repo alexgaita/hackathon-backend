@@ -41,18 +41,30 @@ module.exports = {
         fs.createReadStream('./calendar.csv')
           .pipe(parse({ delimiter: ',', from_line: 2 }))
           .on('data', function (row) {
+            if (
+              !apartmentsGroupedByReferenceId.get(row[0])?.id ||
+              row[2] !== 't' ||
+              row[1] > '2024-01-01'
+            ) {
+              console.log(
+                'skip',
+                apartmentsGroupedByReferenceId.get(row[0])?.id,
+                row[0],
+                row[1],
+                row[2]
+              );
+              return;
+            }
             console.log(count);
             count = count + 1;
-            if (!apartmentsGroupedByReferenceId[row[0]]?.id || row[2] !== 't')
-              return;
             calendarData.push({
-              ApartmentId: Number(apartmentsGroupedByReferenceId[row[0]].id),
+              ApartmentId: apartmentsGroupedByReferenceId.get(row[0]).id,
               date: row[1],
               available: row[2] === 't',
             });
           })
-          .on('end', () => {
-            calendarLogic.bulkCreate(calendarData);
+          .on('end', async () => {
+            await calendarLogic.bulkCreate(calendarData);
           });
       });
   },
