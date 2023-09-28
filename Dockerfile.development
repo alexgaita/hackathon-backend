@@ -1,0 +1,11 @@
+
+FROM --platform=linux/arm64 amd64/node:alpine
+
+WORKDIR /app
+
+COPY . .
+COPY public ./
+COPY package.json ./
+RUN npm install
+
+CMD ["npm", "run", "start:dev"]
