@@ -2,7 +2,7 @@ const { OpenAI } = require("openai");
 
 const openai = new OpenAI({
     organization: process.env.OPENAI_ORGANISATION,
-    apiKey: process.OPENAI_TOKEN,
+    apiKey: process.env.OPENAI_TOKEN,
 });
 
 module.exports = {
