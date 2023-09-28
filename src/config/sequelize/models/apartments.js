@@ -12,9 +12,13 @@ module.exports = (sequelize, DataTypes) =>
         allowNull: false,
         type: DataTypes.STRING,
       },
+      referenceId: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       price: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
       },
       address: {
         allowNull: false,
