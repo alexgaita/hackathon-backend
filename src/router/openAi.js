@@ -10,4 +10,11 @@ router.route('/')
         res.send({ ...result })
     }))
 
+router.route('/validate')
+    .post(wrap(async (req, res) => {
+        let result = await processFacade.validateMessage(req.body)
+
+        res.send({ ...result })
+    }))
+
 module.exports = router
