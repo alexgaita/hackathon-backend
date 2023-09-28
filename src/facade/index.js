@@ -5,5 +5,5 @@ module.exports = {
   inputFacade: require('./input'),
   responseFacade: require('./response'),
   statisticsFacade: require('./statistics'),
-  airbnbPopulateFacade: require('./airbnbPopulate'),
-}
+  apartmentsFacade: require('./apartments'),
+};

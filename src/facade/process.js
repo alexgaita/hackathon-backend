@@ -1,66 +1,57 @@
-const { getDataFromOpenAi } = require('../services/openAi')
+const { getDataFromOpenAi } = require('../services/openAi');
 
 module.exports = {
-    processOpenAi: async (body) => {
-        const { message } = body
-        if (!message) {
-            let error = new Error('MESSAGE_EMPTY')
-            error.status = 400
+  processOpenAi: async (body) => {
+    const { message } = body;
+    if (!message) {
+      let error = new Error('MESSAGE_EMPTY');
+      error.status = 400;
 
-            throw error
-        }
+      throw error;
+    }
 
-        const openAiResponse = await getDataFromOpenAi(message)
+    const openAiResponse = await getDataFromOpenAi(message);
 
-        if (openAiResponse.length === 0) {
-            let error = new Error('UNKNOWN_RESPONSE')
-            error.status = 400
+    if (openAiResponse.length === 0) {
+      let error = new Error('UNKNOWN_RESPONSE');
+      error.status = 400;
 
-            throw error
-        }
+      throw error;
+    }
 
-        return {
-            data: openAiResponse[0].message.content
-        }
-    },
-    validateMessage: async (body) => {
-        const { message } = body
-        if (!message) {
-            let error = new Error('MESSAGE_EMPTY')
-            error.status = 400
+    return {
+      data: openAiResponse[0].message.content,
+    };
+  },
+  validateMessage: async (body) => {
+    const { message } = body;
 
-            throw error
-        }
+    if (!message) {
+      let error = new Error('MESSAGE_EMPTY');
+      error.status = 400;
 
-        const openAiResponse = await getDataFromOpenAi(`
+      throw error;
+    }
+
+    const openAiResponse = await getDataFromOpenAi(`
             Please transform this message
             ${message}
-            into format 
+            into json format 
             Location: Location from the message,
-            Period: Period from the message,
-            Price: Price from the period
-        `)
+            Start: Start from the message,
+            End: End from the message,
+            Price: Price as number
+        `);
 
-        if (openAiResponse.length === 0) {
-            let error = new Error('UNKNOWN_RESPONSE')
-            error.status = 400
+    if (openAiResponse.length === 0) {
+      let error = new Error('UNKNOWN_RESPONSE');
+      error.status = 400;
 
-            throw error
-        }
+      throw error;
+    }
 
-        const result = {
-            location: '',
-            period: '',
-            price: ''
-        }
-
-        openAiResponse[0].message.content.split('\n').forEach(data => {
-            const keyValue = data.split(':')
-            result[keyValue[0].toLowerCase()] = keyValue[1]
-        })
-
-        return {
-            data: result
-        }
-    },
-}
+    return {
+      data: JSON.parse(openAiResponse[0].message.content),
+    };
+  },
+};

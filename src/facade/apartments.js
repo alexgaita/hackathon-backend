@@ -1,7 +1,10 @@
 const { apartmentLogic, calendarLogic } = require('../logic');
 
+const { Op } = require('sequelize');
 const fs = require('fs');
 const { parse } = require('csv-parse');
+const dayjs = require('dayjs');
+const { validateMessage } = require('./process');
 
 const associateTo = (collection, keySelector, destinationIndex) => {
   collection.forEach((value) =>
@@ -15,7 +18,7 @@ const associateBy = (collection, keySelector) => {
 };
 
 module.exports = {
-  airbnbPopulate: async () => {
+  saveApartments: async () => {
     const apartmentData = [];
     fs.createReadStream('./listings.csv')
       .pipe(parse({ delimiter: ',', from_line: 2 }))
@@ -67,5 +70,54 @@ module.exports = {
             await calendarLogic.bulkCreate(calendarData);
           });
       });
+  },
+
+  getAllFilteredApartments: async (body) => {
+    const validatedResponse = await validateMessage(body);
+
+    // const validatedResponse = {
+    //   data: {
+    //     Location: 'Berg',
+    //     Start: '2023-05-01',
+    //     End: '2023-07-01',
+    //     Price: 500,
+    //   },
+    // };
+
+    console.log(validatedResponse);
+
+    const availableApartments = await calendarLogic.findAndCountAll({
+      date: {
+        [Op.between]: [
+          dayjs(validatedResponse.data.Start).format('YYYY-MM-DD'),
+          dayjs(validatedResponse.data.End).format('YYYY-MM-DD'),
+        ],
+      },
+    });
+
+    const apartmentsResponse = await apartmentLogic.findAndCountAll({
+      referenceId: {
+        [Op.in]: availableApartments.rows.map((it) => String(it.id)),
+      },
+      price: {
+        [Op.lte]: Number(validatedResponse.data.Price),
+      },
+      [Op.or]: [
+        {
+          name: {
+            [Op.like]: `%${validatedResponse.data.Location}%`,
+          },
+        },
+        {
+          address: {
+            [Op.like]: `%${validatedResponse.data.Location}%`,
+          },
+        },
+      ],
+    });
+
+    return {
+      data: apartmentsResponse,
+    };
   },
 };

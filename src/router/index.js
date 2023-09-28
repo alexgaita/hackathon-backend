@@ -4,6 +4,6 @@ module.exports = {
   responseRouter: require('./response'),
   authRouter: require('./auth'),
   openAiRouter: require('./openAi'),
-  saveAirbnb: require('./saveAirbnb'),
+  apartment: require('./apartment'),
   statisticsRouter: require('./statistics'),
 };
