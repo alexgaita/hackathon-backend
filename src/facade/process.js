@@ -12,8 +12,6 @@ module.exports = {
 
         const openAiResponse = await getDataFromOpenAi(message)
 
-        // TODO: Save message to questions and response to responses
-
         if (openAiResponse.length === 0) {
             let error = new Error('UNKNOWN_RESPONSE')
             error.status = 400

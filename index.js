@@ -25,6 +25,8 @@ module.exports = {
       app.use('/api/auth', routers.authRouter)
 
       app.use('/api/users', middlewares.authorisationHandler, routers.userRouter)
+      app.use('/api/inputs', middlewares.authorisationHandler, routers.inputRouter)
+      app.use('/api/responses', middlewares.authorisationHandler, routers.responseRouter)
       app.use('/api/openAi', middlewares.authorisationHandler, routers.openAiRouter)
 
       app.use('/api', middlewares.notFoundHandler)
