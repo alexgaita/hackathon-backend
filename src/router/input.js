@@ -10,7 +10,7 @@ router.route('/')
         res.send({ ...result })
     }))
     .post(wrap(async (req, res) => {
-        let result = await inputFacade.create(req.body)
+        let result = await inputFacade.create(req.body, req.auth.id)
 
         res.send({ ...result })
     }))
