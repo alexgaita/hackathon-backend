@@ -6,8 +6,8 @@ module.exports = {
 
         return result
     },
-    findAndCountAll: async (query) => {
-        const result = await inputRepository.findAndCountAll(query)
+    findAndCountAll: async (query, options) => {
+        const result = await inputRepository.findAndCountAll(query, options)
 
         return result
     },

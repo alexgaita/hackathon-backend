@@ -33,12 +33,12 @@ module.exports = {
         }
 
         const openAiResponse = await getDataFromOpenAi(`
-        Please transform this message
-        ${message}
-        into format 
-        Location: Location from the message,
-        Period: Period from the message,
-        Price: Price from the period
+            Please transform this message
+            ${message}
+            into format 
+            Location: Location from the message,
+            Period: Period from the message,
+            Price: Price from the period
         `)
 
         if (openAiResponse.length === 0) {

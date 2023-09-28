@@ -25,31 +25,12 @@ module.exports = {
 
         app.use('/api/auth', routers.authRouter);
 
-        app.use(
-          '/api/users',
-          middlewares.authorisationHandler,
-          routers.userRouter
-        );
-        app.use(
-          '/api/inputs',
-          middlewares.authorisationHandler,
-          routers.inputRouter
-        );
-        app.use(
-          '/api/responses',
-          middlewares.authorisationHandler,
-          routers.responseRouter
-        );
-        app.use(
-          '/api/openAi',
-          middlewares.authorisationHandler,
-          routers.openAiRouter
-        );
-        app.use(
-          '/api/saveAirbnb',
-          middlewares.authorisationHandler,
-          routers.saveAirbnb
-        );
+        app.use('/api/users', middlewares.authorisationHandler, routers.userRouter)
+        app.use('/api/inputs', middlewares.authorisationHandler, routers.inputRouter)
+        app.use('/api/responses', middlewares.authorisationHandler, routers.responseRouter)
+        app.use('/api/openAi', middlewares.authorisationHandler, routers.openAiRouter)
+        app.use('/api/statistics', middlewares.authorisationHandler, routers.statisticsRouter)
+        app.use('/api/saveAirbnb', middlewares.authorisationHandler, routers.saveAirbnb);
 
         app.use('/api', middlewares.notFoundHandler);
         app.use('/api', middlewares.errorHandler);

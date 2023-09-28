@@ -4,5 +4,6 @@ module.exports = {
   processFacade: require('./process'),
   inputFacade: require('./input'),
   responseFacade: require('./response'),
+  statisticsFacade: require('./statistics'),
   airbnbPopulateFacade: require('./airbnbPopulate'),
-};
+}
