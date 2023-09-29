@@ -19,7 +19,8 @@ module.exports = {
             price,
             location,
             start: dayjs(start).format('YYYY-MM-DD'),
-            end: dayjs(end).format('YYYY-MM-DD')
+            end: dayjs(end).format('YYYY-MM-DD'),
+            UserId: loggedUserId
         })
 
         const response = await processFacade.processOpenAi({ message: `${content} euro per night` })

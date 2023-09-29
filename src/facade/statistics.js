@@ -12,7 +12,7 @@ module.exports = {
             throw error
         }
 
-        const { rows } = await inputLogic.findAndCountAll({ UserId: loggedUserId }, { limit: 30, order: [['createdAt', 'DESC']] })
+        const { rows } = await inputLogic.findAndCountAll({ UserId: loggedUserId }, { limit: 3, order: [['createdAt', 'DESC']] })
 
         const mostInputsByLocation = groupBy(rows, 'location')
         let openAiPrices = {}
